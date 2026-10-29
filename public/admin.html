@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Admin Panel | Campus EventHub</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Crect width='24' height='24' rx='6' fill='%234f46e5'/%3E%3Cpath d='M7 9h10M7 13h6' stroke='white' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E">
+</head>
+<body>
+  <header id="site-header"></header>
+  <main>
+    <div class="container page-head">
+      <div class="section-head" style="margin-top:0">
+        <div>
+          <h1 style="margin:0">Admin panel</h1>
+          <p class="muted" style="margin:0">Create and manage events, and see who has registered.</p>
+        </div>
+        <button class="btn btn-primary" id="new-event"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg> New event</button>
+      </div>
+      <div class="stats" id="stats"></div>
+      <div class="panel">
+        <div class="panel-head">
+          <h2>All events</h2>
+          <input class="input" type="search" id="admin-search" placeholder="Filter events..." style="max-width:260px">
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Event</th><th>Category</th><th>Date &amp; time</th><th>Registrations</th><th style="text-align:right">Actions</th></tr></thead>
+            <tbody id="rows"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- Create / edit event dialog -->
+    <dialog id="event-dialog">
+      <form id="event-form" novalidate>
+        <div class="modal-head">
+          <h2 id="dialog-title">New event</h2>
+          <button type="button" class="icon-btn" data-close aria-label="Close"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6 6 18M6 6l12 12"/></svg></button>
+        </div>
+        <div class="modal-body">
+          <div class="alert alert-error hidden" id="event-error"></div>
+          <div class="form-grid">
+            <div class="field span-2"><label for="f-title">Title</label><input class="input" id="f-title" name="title" placeholder="e.g. Web Dev Bootcamp"><span class="error"></span></div>
+            <div class="field"><label for="f-category">Category</label><select class="input" id="f-category" name="category"></select><span class="error"></span></div>
+            <div class="field"><label for="f-capacity">Capacity</label><input class="input" type="number" min="1" id="f-capacity" name="capacity" placeholder="e.g. 100"><span class="error"></span></div>
+            <div class="field"><label for="f-date">Date</label><input class="input" type="date" id="f-date" name="date"><span class="error"></span></div>
+            <div class="field"><label for="f-time">Time</label><input class="input" type="time" id="f-time" name="time"><span class="error"></span></div>
+            <div class="field"><label for="f-venue">Venue</label><input class="input" id="f-venue" name="venue" placeholder="e.g. Seminar Hall 1"><span class="error"></span></div>
+            <div class="field"><label for="f-organizer">Organizer</label><input class="input" id="f-organizer" name="organizer" placeholder="e.g. Coding Club"><span class="error"></span></div>
+            <div class="field span-2"><label for="f-description">Description</label><textarea class="input" id="f-description" name="description" placeholder="What is the event about? Who should attend?"></textarea><span class="error"></span></div>
+          </div>
+        </div>
+        <div class="modal-foot">
+          <button type="button" class="btn btn-outline" data-close>Cancel</button>
+          <button type="submit" class="btn btn-primary" id="save-btn">Save event</button>
+        </div>
+      </form>
+    </dialog>
+
+    <!-- Registrants dialog -->
+    <dialog id="reg-dialog">
+      <div class="modal-head">
+        <h2 id="reg-title">Registrants</h2>
+        <button type="button" class="icon-btn" data-close aria-label="Close"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6 6 18M6 6l12 12"/></svg></button>
+      </div>
+      <div class="modal-body" id="reg-body" style="padding:0"></div>
+      <div class="modal-foot">
+        <button type="button" class="btn btn-outline" id="csv-btn"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg> Download CSV</button>
+        <button type="button" class="btn btn-primary" data-close>Done</button>
+      </div>
+    </dialog>
+  </main>
+  <footer id="site-footer"></footer>
+  <script src="/js/common.js"></script>
+  <script src="/js/admin.js"></script>
+</body>
+</html>

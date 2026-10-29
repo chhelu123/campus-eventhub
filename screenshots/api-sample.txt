@@ -1,0 +1,81 @@
+$ curl -s http://localhost:3000/api/events/1
+{
+  "event": {
+    "id": 1,
+    "title": "CodeSprint 2026 - 24h Hackathon",
+    "description": "A 24-hour team hackathon where teams of 2-4 build solutions to real campus and civic problems. Mentors from industry, free meals through the night and prizes worth Rs 50,000. Bring your laptop and your best ideas.",
+    "category": "Technical",
+    "date": "2026-11-07",
+    "time": "09:00",
+    "venue": "Main Computer Lab, Block A",
+    "organizer": "Computer Society (CSI)",
+    "capacity": 120,
+    "created_by": 1,
+    "created_at": "2026-10-29 17:22:58",
+    "registered_count": 4,
+    "is_registered": false,
+    "seats_left": 116,
+    "is_past": false
+  }
+}
+
+$ curl -s -c cookies.txt -H "Content-Type: application/json" -d "{\"email\":\"ananya.joshi@student.edu\",\"password\":\"ananya123\"}" http://localhost:3000/api/auth/login
+{
+  "user": {
+    "id": 7,
+    "name": "Ananya Joshi",
+    "email": "ananya.joshi@student.edu",
+    "role": "student",
+    "department": "Computer",
+    "year": "TY"
+  }
+}
+
+$ curl -s -b cookies.txt -X POST http://localhost:3000/api/events/6/register   (trimmed)
+{
+  "message": "Registered successfully.",
+  "event": {
+    "id": 6,
+    "title": "Robotics Expo & Line-Follower Race",
+    "registered_count": 2,
+    "is_registered": true,
+    "seats_left": 38
+  }
+}
+
+$ curl -s -b cookies.txt -X POST http://localhost:3000/api/events/1/register      # same event twice -> HTTP 409
+{"error":"You are already registered for this event."}
+
+$ curl -s -b cookies.txt http://localhost:3000/api/admin/stats                    # student calling admin API -> HTTP 403
+{"error":"Admin access only."}
+
+$ curl -s "http://localhost:3000/api/events?category=Workshop&when=all"   (trimmed to id/title/date/seats)
+{
+  "count": 3,
+  "events": [
+    {
+      "id": 8,
+      "title": "Workshop: Building REST APIs with Node.js",
+      "date": "2026-10-23",
+      "registered_count": 1,
+      "seats_left": 49,
+      "is_past": true
+    },
+    {
+      "id": 4,
+      "title": "Hands-on Workshop: Git & GitHub",
+      "date": "2026-11-03",
+      "registered_count": 3,
+      "seats_left": 57,
+      "is_past": false
+    },
+    {
+      "id": 9,
+      "title": "Web Dev Bootcamp: HTML, CSS & JavaScript",
+      "date": "2026-11-23",
+      "registered_count": 0,
+      "seats_left": 75,
+      "is_past": false
+    }
+  ]
+}

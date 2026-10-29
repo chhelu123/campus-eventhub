@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Log in | Campus EventHub</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Crect width='24' height='24' rx='6' fill='%234f46e5'/%3E%3Cpath d='M7 9h10M7 13h6' stroke='white' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E">
+</head>
+<body>
+  <header id="site-header"></header>
+  <main class="auth-wrap">
+    <aside class="auth-side">
+      <h2>Never miss a campus event again.</h2>
+      <ul>
+        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6 9 17l-5-5"/></svg>Hackathons, fests, workshops and guest talks in one place</li>
+        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6 9 17l-5-5"/></svg>Register or cancel with a single click</li>
+        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6 9 17l-5-5"/></svg>Live seat availability for every event</li>
+      </ul>
+    </aside>
+    <section class="auth-main">
+      <div class="auth-card">
+        <h1>Welcome back</h1>
+        <p>Log in to register for events and manage your registrations.</p>
+        <div class="alert alert-error hidden" id="form-error"></div>
+        <form id="login-form" novalidate>
+          <div class="field">
+            <label for="email">College email</label>
+            <input class="input" type="email" id="email" name="email" placeholder="you@college.edu" autocomplete="email">
+            <span class="error"></span>
+          </div>
+          <div class="field">
+            <label for="password">Password</label>
+            <input class="input" type="password" id="password" name="password" placeholder="Your password" autocomplete="current-password">
+            <span class="error"></span>
+          </div>
+          <button class="btn btn-primary btn-block btn-lg" type="submit">Log in</button>
+        </form>
+        <p class="muted" style="text-align:center;margin-top:1.2rem">New here? <a href="/signup">Create an account</a></p>
+        <div class="demo-box"><strong>Demo admin:</strong> <code>admin@eventhub.com</code> / <code>admin123</code></div>
+      </div>
+    </section>
+  </main>
+  <script src="/js/common.js"></script>
+  <script src="/js/auth.js"></script>
+</body>
+</html>

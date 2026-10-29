@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Discover Events | Campus EventHub</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Crect width='24' height='24' rx='6' fill='%234f46e5'/%3E%3Cpath d='M7 9h10M7 13h6' stroke='white' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E">
+</head>
+<body>
+  <header id="site-header"></header>
+  <main>
+    <section class="hero">
+      <div class="container">
+        <span class="eyebrow">Fests &middot; Workshops &middot; Talks &middot; Sports</span>
+        <h1>Discover what's happening on campus</h1>
+        <p>Browse upcoming college events, register in one click and keep track of everything you've signed up for.</p>
+        <div class="hero-stats" id="hero-stats"></div>
+      </div>
+    </section>
+
+    <div class="container">
+      <form class="filters" id="filters" autocomplete="off" onsubmit="return false">
+        <div class="filters-row">
+          <div class="field search-field">
+            <label for="search">Search</label>
+            <div class="search-box">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+              <input class="input" type="search" id="search" name="search" placeholder="Search by title, venue or organizer...">
+            </div>
+          </div>
+          <div class="field">
+            <label for="from">From date</label>
+            <input class="input" type="date" id="from" name="from">
+          </div>
+          <div class="field">
+            <label for="to">To date</label>
+            <input class="input" type="date" id="to" name="to">
+          </div>
+          <button type="button" class="btn btn-outline" id="reset">Reset</button>
+        </div>
+        <div class="chips" id="chips">
+          <button type="button" class="chip active" data-cat="">All</button>
+          <div class="segmented" id="when">
+            <button type="button" data-when="upcoming" class="active">Upcoming</button>
+            <button type="button" data-when="past">Past</button>
+            <button type="button" data-when="all">All</button>
+          </div>
+        </div>
+      </form>
+
+      <div class="section-head">
+        <h2 id="results-title">Upcoming events</h2>
+        <span class="muted" id="results-count"></span>
+      </div>
+      <div class="grid" id="grid"></div>
+    </div>
+  </main>
+  <footer id="site-footer"></footer>
+  <script src="/js/common.js"></script>
+  <script src="/js/events.js"></script>
+</body>
+</html>

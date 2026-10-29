@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Campus EventHub - Mini Project Report</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  @page { size: A4; margin: 16mm 15mm 16mm 15mm; }
+  * { box-sizing: border-box; }
+  body { font-family: 'Inter', 'Segoe UI', Arial, sans-serif; color: #1e293b; font-size: 10.5pt; line-height: 1.55; margin: 0; }
+  h1, h2, h3 { color: #0f172a; line-height: 1.25; }
+  h2 { font-size: 15pt; margin: 0 0 8pt; padding-bottom: 5pt; border-bottom: 2px solid #4f46e5; break-after: avoid; }
+  h3 { font-size: 11.5pt; margin: 14pt 0 6pt; break-after: avoid; }
+  p { margin: 0 0 8pt; text-align: justify; }
+  section { margin-bottom: 18pt; }
+  .page-break { break-before: page; }
+  code { font-family: Consolas, 'Courier New', monospace; font-size: 9pt; background: #f1f5f9; padding: 0 3px; border-radius: 3px; }
+  pre { background: #0f172a; color: #e2e8f0; border-radius: 6px; padding: 9pt 11pt; font-size: 8.6pt; line-height: 1.45; white-space: pre-wrap; word-break: break-word; break-inside: avoid; margin: 0 0 6pt; }
+  pre code { background: none; padding: 0; color: inherit; font-size: inherit; }
+  .explain { font-size: 10pt; background: #f8fafc; border-left: 3px solid #4f46e5; padding: 6pt 9pt; break-inside: avoid; }
+  table { width: 100%; border-collapse: collapse; font-size: 9.5pt; margin: 4pt 0 10pt; break-inside: auto; }
+  th { background: #eef2ff; color: #3730a3; text-align: left; font-weight: 700; }
+  th, td { border: 1px solid #cbd5e1; padding: 4pt 6pt; vertical-align: top; }
+  tr { break-inside: avoid; }
+  ul { margin: 0 0 8pt; padding-left: 16pt; }
+  li { margin-bottom: 3pt; }
+
+  /* cover */
+  .cover { height: 260mm; display: flex; flex-direction: column; justify-content: space-between; text-align: center; padding: 18mm 8mm 6mm; }
+  .cover .tag { letter-spacing: .2em; font-size: 10pt; color: #4f46e5; font-weight: 700; text-transform: uppercase; }
+  .cover h1 { font-size: 34pt; margin: 10pt 0 6pt; font-weight: 800; }
+  .cover .sub { font-size: 14pt; color: #475569; }
+  .cover .logo { width: 70px; height: 70px; border-radius: 18px; margin: 0 auto 16pt; background: linear-gradient(135deg, #4f46e5, #0ea5e9); display: grid; place-items: center; }
+  .cover .stack { margin-top: 18pt; display: flex; justify-content: center; gap: 8pt; flex-wrap: wrap; }
+  .cover .stack span { border: 1px solid #c7d2fe; background: #eef2ff; color: #3730a3; border-radius: 99px; padding: 3pt 10pt; font-size: 9.5pt; font-weight: 600; }
+  .details { width: 70%; margin: 0 auto; text-align: left; font-size: 11pt; }
+  .details td { border: 0; border-bottom: 1px solid #cbd5e1; padding: 9pt 4pt; }
+  .details td:first-child { width: 40%; font-weight: 600; color: #475569; }
+
+  /* diagrams */
+  .arch { display: flex; align-items: stretch; gap: 6pt; margin: 6pt 0 10pt; break-inside: avoid; }
+  .tier { flex: 1; border: 1.5px solid #c7d2fe; border-radius: 8px; padding: 7pt; background: #fafaff; }
+  .tier h4 { margin: 0 0 5pt; font-size: 10pt; text-align: center; color: #3730a3; }
+  .box { background: #fff; border: 1px solid #cbd5e1; border-radius: 5px; padding: 4pt 6pt; margin-bottom: 4pt; font-size: 8.8pt; }
+  .box b { display: block; color: #0f172a; }
+  .arrow { display: flex; flex-direction: column; justify-content: center; align-items: center; font-size: 8pt; color: #475569; width: 70px; text-align: center; }
+  .arrow .line { font-size: 16pt; color: #4f46e5; line-height: 1; }
+  .db { background: #ecfdf5; border-color: #a7f3d0; }
+  .er { display: flex; gap: 10pt; align-items: flex-start; justify-content: center; margin: 6pt 0 8pt; break-inside: avoid; }
+  .entity { border: 1.5px solid #4f46e5; border-radius: 6px; overflow: hidden; font-size: 8.6pt; min-width: 150px; }
+  .entity .eh { background: #4f46e5; color: #fff; font-weight: 700; padding: 3pt 7pt; text-align: center; }
+  .entity div.r { padding: 2pt 7pt; border-top: 1px solid #e2e8f0; font-family: Consolas, monospace; }
+  .pk { color: #b45309; font-weight: 700; } .fk { color: #0369a1; font-weight: 700; }
+  .rel { align-self: center; font-size: 8.5pt; color: #475569; text-align: center; }
+
+  .m { font-family: Consolas, monospace; font-weight: 700; font-size: 8.5pt; padding: 1pt 5pt; border-radius: 3px; color: #fff; }
+  .m-get { background: #059669; } .m-post { background: #2563eb; } .m-put { background: #d97706; } .m-delete { background: #dc2626; }
+
+  /* figures */
+  .fig { margin: 0 0 14pt; break-inside: avoid; text-align: center; }
+  .fig img { width: 100%; border: 1px solid #cbd5e1; border-radius: 4px; }
+  .fig.mobile img { width: 42%; }
+  .fig.tall img { width: 72%; }
+  figcaption { font-size: 9pt; color: #475569; margin-top: 4pt; font-style: italic; }
+  .figs .fig:nth-child(2n) { break-after: page; }
+  .figs .fig { height: 112mm; display: flex; flex-direction: column; justify-content: flex-start; }
+  .figs .fig img { max-height: 102mm; object-fit: contain; }
+  .figs .fig.mobile, .figs .fig.tall { height: auto; }
+  .figs .fig.mobile img, .figs .fig.tall img { max-height: 235mm; }
+</style>
+</head>
+<body>
+
+<!-- ============ COVER ============ -->
+<div class="cover">
+  <div>
+    <div class="tag">Web Programming (WP) &middot; Mini Project Report</div>
+    <h1>Campus EventHub</h1>
+    <div class="sub">A full-stack college event registration website</div>
+    <div class="stack"><span>HTML5</span><span>CSS3</span><span>JavaScript</span><span>Node.js 24</span><span>Express 5</span><span>SQLite</span><span>REST API</span></div>
+  </div>
+  <div class="logo"><svg width="38" height="38" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg></div>
+  <table class="details">
+    <tr><td>Course</td><td>TY BTech &middot; Web Programming</td></tr>
+    <tr><td>Submitted by</td><td>&nbsp;</td></tr>
+    <tr><td>Roll No. / Division</td><td>&nbsp;</td></tr>
+    <tr><td>Submitted to</td><td>&nbsp;</td></tr>
+    <tr><td>Source code</td><td>github.com/chhelu123/campus-eventhub</td></tr>
+  </table>
+  <div style="font-size:9pt;color:#64748b">Contents: 1 Aim &middot; 2 Description &middot; 3 Features &middot; 4 Technology Stack &middot; 5 Architecture &middot; 6 Database Schema &middot; 7 API Endpoints &middot; 8 Code &middot; 9 How to Run &middot; 10 Output &middot; 11 Conclusion</div>
+</div>
+
+<!-- ============ 1-3 ============ -->
+<section class="page-break">
+  <h2>1. Aim</h2>
+  <p>To design and develop a full-stack, database-backed web application using <b>HTML, CSS and JavaScript</b> on the client side and <b>Node.js with Express</b> and an <b>SQLite</b> database on the server side, communicating through a <b>REST API</b> that exchanges JSON.</p>
+</section>
+
+<section>
+  <h2>2. Description</h2>
+  <p>Colleges run many events every semester - hackathons, cultural nights, sports leagues, workshops and guest talks. Registrations are usually collected on paper or through scattered online forms, which makes it hard for students to see what is coming up and hard for organisers to know how many seats are left.</p>
+  <p><b>Campus EventHub</b> brings all of this into one website. <b>Students</b> sign up, browse and search events, filter them by category and date, open an event to read the details, register with one click when seats are available and cancel if their plans change. A <i>My Registrations</i> page lists everything they have signed up for. The <b>admin</b> (event coordinator) logs in to an admin panel to create, edit and delete events, see overall statistics and view or download the list of students registered for each event.</p>
+  <p>All rules are enforced on the server - seat capacity, one registration per student per event, no registration for past events and admin-only actions - so the data stays consistent even if someone calls the API directly.</p>
+</section>
+
+<section>
+  <h2>3. Features</h2>
+  <table>
+    <tr><th style="width:22%">Area</th><th>Features</th></tr>
+    <tr><td>Authentication</td><td>Sign up, log in, log out; passwords hashed with bcrypt; login kept in an httpOnly JWT cookie (7 days); role-based access (student / admin)</td></tr>
+    <tr><td>Browse events</td><td>Event cards with category colour, date badge, venue, time and live seat bar; search by title / description / venue / organiser; category filter; date-range filter; Upcoming / Past / All toggle</td></tr>
+    <tr><td>Event details</td><td>Description, date, time, venue, organiser, seats registered / left; Register and Cancel buttons with instant update</td></tr>
+    <tr><td>My registrations</td><td>Upcoming and Past tabs, cancel a registration, link to each event</td></tr>
+    <tr><td>Admin panel</td><td>Statistics cards; table of all events; create / edit / delete events in a modal form; registrant list per event with CSV download</td></tr>
+    <tr><td>Validation</td><td>Client-side validation with inline messages; the same rules re-checked on the server with proper HTTP status codes (400, 401, 403, 404, 409)</td></tr>
+    <tr><td>User interface</td><td>Modern, responsive design (desktop, tablet, mobile); toast notifications; loading and empty states</td></tr>
+  </table>
+  <p><b>Demo accounts</b> (created automatically on first run): admin <code>admin@eventhub.com</code> / <code>admin123</code>; sample students such as <code>aarav@student.edu</code> / <code>student123</code>.</p>
+</section>
+
+<section>
+  <h2>4. Technology Stack</h2>
+  <table>
+    <tr><th style="width:18%">Layer</th><th style="width:38%">Technology</th><th>Purpose</th></tr>
+    <tr><td>Frontend</td><td>HTML5, CSS3 (Flexbox, Grid, media queries), vanilla JavaScript, <code>fetch()</code></td><td>Pages, styling, responsive layout, calling the API and updating the DOM</td></tr>
+    <tr><td>Backend</td><td>Node.js 24, Express 5</td><td>Web server, REST API routing, middleware, serving static files</td></tr>
+    <tr><td>Database</td><td>SQLite through Node's built-in <code>node:sqlite</code> (<code>DatabaseSync</code>)</td><td>Relational storage in a single file; no separate DB server or native add-on</td></tr>
+    <tr><td>Security</td><td>bcryptjs, jsonwebtoken, cookie-parser</td><td>Password hashing, signed login tokens, reading the auth cookie</td></tr>
+    <tr><td>Tools</td><td>Git / GitHub, Google Chrome, curl, VS Code</td><td>Version control, testing, screenshots, API testing</td></tr>
+  </table>
+</section>
+
+<!-- ============ 5 ARCHITECTURE ============ -->
+<section class="page-break">
+  <h2>5. System Architecture</h2>
+  <p>The application follows a three-tier <b>client-server architecture</b>. The browser loads static HTML, CSS and JavaScript from the Express server; the JavaScript then calls the REST API with <code>fetch()</code>. The server authenticates the request, applies the business rules and reads or writes the SQLite database, and sends back JSON that the page renders.</p>
+  <div class="arch">
+    <div class="tier">
+      <h4>Presentation tier (Browser)</h4>
+      <div class="box"><b>HTML pages</b>index, event, login, signup, my, admin</div>
+      <div class="box"><b>style.css</b>responsive layout, components</div>
+      <div class="box"><b>JavaScript</b>common.js (api, nav, toast, validation) + one script per page</div>
+    </div>
+    <div class="arrow"><span class="line">&#8644;</span>HTTP<br>JSON +<br>auth cookie</div>
+    <div class="tier">
+      <h4>Application tier (Node.js + Express)</h4>
+      <div class="box"><b>express.static</b>serves /public</div>
+      <div class="box"><b>Middleware</b>express.json, cookieParser, loadUser (JWT), requireAuth, requireAdmin</div>
+      <div class="box"><b>Routes</b>/api/auth &middot; /api/events &middot; /api/me &middot; /api/admin</div>
+    </div>
+    <div class="arrow"><span class="line">&#8644;</span>SQL<br>prepared<br>statements</div>
+    <div class="tier">
+      <h4>Data tier</h4>
+      <div class="box db"><b>SQLite file</b>data/eventhub.db</div>
+      <div class="box db"><b>Tables</b>users<br>events<br>registrations</div>
+    </div>
+  </div>
+
+  <h3>Request flow example - student registers for an event</h3>
+  <ol style="margin:0 0 8pt;padding-left:16pt">
+    <li>The student clicks <i>Register now</i>; <code>event.js</code> sends <code>POST /api/events/1/register</code> with the login cookie.</li>
+    <li><code>loadUser</code> verifies the JWT and sets <code>req.user</code>; <code>requireAuth</code> lets the request through.</li>
+    <li>The route checks the event exists, is upcoming, is not full and the student is not already registered, then inserts a row in <code>registrations</code>.</li>
+    <li>The server replies <code>201 Created</code> with the updated event; the page shows a toast and redraws the seat bar.</li>
+  </ol>
+
+  <h3>Folder structure</h3>
+<pre><code>campus-eventhub/
+├── package.json             dependencies and npm scripts
+├── server/
+│   ├── index.js             Express app: middleware, routes, static files, errors
+│   ├── db.js                SQLite connection, CREATE TABLE, seed data
+│   ├── middleware/auth.js   JWT cookie helpers, requireAuth, requireAdmin
+│   └── routes/              auth.js, events.js, me.js, admin.js
+├── public/
+│   ├── *.html               index, event, login, signup, my, admin, 404
+│   ├── css/style.css
+│   └── js/                  common.js, events.js, event.js, auth.js, my.js, admin.js
+├── screenshots/             output screenshots
+└── report/                  this report (HTML source of REPORT.pdf)</code></pre>
+</section>
+
+<!-- ============ 6 DATABASE ============ -->
+<section class="page-break">
+  <h2>6. Database Schema</h2>
+  <p>The database has three tables. <code>registrations</code> is the junction table of the many-to-many relationship between students and events.</p>
+  <div class="er">
+    <div class="entity"><div class="eh">users</div>
+      <div class="r"><span class="pk">PK</span> id</div><div class="r">name</div><div class="r">email (UNIQUE)</div><div class="r">password_hash</div><div class="r">role</div><div class="r">department</div><div class="r">year</div><div class="r">created_at</div></div>
+    <div class="rel">1 &#8212;&#8212; N<br>registers</div>
+    <div class="entity"><div class="eh">registrations</div>
+      <div class="r"><span class="pk">PK</span> id</div><div class="r"><span class="fk">FK</span> user_id</div><div class="r"><span class="fk">FK</span> event_id</div><div class="r">registered_at</div><div class="r">UNIQUE(user_id, event_id)</div></div>
+    <div class="rel">N &#8212;&#8212; 1<br>for</div>
+    <div class="entity"><div class="eh">events</div>
+      <div class="r"><span class="pk">PK</span> id</div><div class="r">title</div><div class="r">description</div><div class="r">category</div><div class="r">date, time</div><div class="r">venue</div><div class="r">organizer</div><div class="r">capacity (&gt; 0)</div><div class="r"><span class="fk">FK</span> created_by</div><div class="r">created_at</div></div>
+  </div>
+  <h3>SQL (from server/db.js)</h3>
+  <pre style="font-size:7.9pt;line-height:1.35"><code>CREATE TABLE users (
+  id            INTEGER PRIMARY KEY AUTOINCREMENT,
+  name          TEXT NOT NULL,
+  email         TEXT NOT NULL UNIQUE,
+  password_hash TEXT NOT NULL,
+  role          TEXT NOT NULL DEFAULT &#x27;student&#x27; CHECK (role IN (&#x27;student&#x27;,&#x27;admin&#x27;)),
+  department    TEXT,
+  year          TEXT,
+  created_at    TEXT NOT NULL DEFAULT (datetime(&#x27;now&#x27;))
+);
+
+CREATE TABLE events (
+  id          INTEGER PRIMARY KEY AUTOINCREMENT,
+  title       TEXT NOT NULL,
+  description TEXT NOT NULL,
+  category    TEXT NOT NULL,
+  date        TEXT NOT NULL,          -- YYYY-MM-DD
+  time        TEXT NOT NULL,          -- HH:MM
+  venue       TEXT NOT NULL,
+  organizer   TEXT NOT NULL,
+  capacity    INTEGER NOT NULL CHECK (capacity &gt; 0),
+  created_by  INTEGER REFERENCES users(id) ON DELETE SET NULL,
+  created_at  TEXT NOT NULL DEFAULT (datetime(&#x27;now&#x27;))
+);
+
+CREATE TABLE registrations (
+  id            INTEGER PRIMARY KEY AUTOINCREMENT,
+  user_id       INTEGER NOT NULL REFERENCES users(id)  ON DELETE CASCADE,
+  event_id      INTEGER NOT NULL REFERENCES events(id) ON DELETE CASCADE,
+  registered_at TEXT NOT NULL DEFAULT (datetime(&#x27;now&#x27;)),
+  UNIQUE (user_id, event_id)
+);</code></pre>
+  <ul>
+    <li><b>Primary keys</b> identify each row; <b>foreign keys</b> link registrations to users and events.</li>
+    <li><code>ON DELETE CASCADE</code> removes an event's registrations when the event is deleted.</li>
+    <li><code>UNIQUE (user_id, event_id)</code> stops a student from registering twice; <code>CHECK</code> constraints guard the role and capacity values.</li>
+  </ul>
+</section>
+
+<!-- ============ 7 API ============ -->
+<section class="page-break">
+  <h2>7. REST API Endpoints</h2>
+  <p>All endpoints are under <code>/api</code>, accept and return JSON, and report errors as <code>{"error": "message"}</code> with a suitable HTTP status code.</p>
+  <table>
+    <tr><th style="width:10%">Method</th><th style="width:33%">Endpoint</th><th style="width:12%">Access</th><th>Description</th></tr>
+    <tr><td><span class="m m-post">POST</span></td><td><code>/api/auth/signup</code></td><td>Public</td><td>Create a student account and log in</td></tr>
+<tr><td><span class="m m-post">POST</span></td><td><code>/api/auth/login</code></td><td>Public</td><td>Log in with email and password (sets cookie)</td></tr>
+<tr><td><span class="m m-post">POST</span></td><td><code>/api/auth/logout</code></td><td>Public</td><td>Clear the login cookie</td></tr>
+<tr><td><span class="m m-get">GET</span></td><td><code>/api/auth/me</code></td><td>Public</td><td>Current user, or null</td></tr>
+<tr><td><span class="m m-get">GET</span></td><td><code>/api/events</code></td><td>Public</td><td>List events; query: search, category, from, to, when</td></tr>
+<tr><td><span class="m m-get">GET</span></td><td><code>/api/events/categories</code></td><td>Public</td><td>Allowed categories</td></tr>
+<tr><td><span class="m m-get">GET</span></td><td><code>/api/events/:id</code></td><td>Public</td><td>One event with seats left / registered flags</td></tr>
+<tr><td><span class="m m-post">POST</span></td><td><code>/api/events/:id/register</code></td><td>Logged in</td><td>Register for an event</td></tr>
+<tr><td><span class="m m-delete">DELETE</span></td><td><code>/api/events/:id/register</code></td><td>Logged in</td><td>Cancel own registration</td></tr>
+<tr><td><span class="m m-get">GET</span></td><td><code>/api/me/registrations</code></td><td>Logged in</td><td>My registered events</td></tr>
+<tr><td><span class="m m-post">POST</span></td><td><code>/api/events</code></td><td>Admin</td><td>Create an event</td></tr>
+<tr><td><span class="m m-put">PUT</span></td><td><code>/api/events/:id</code></td><td>Admin</td><td>Update an event</td></tr>
+<tr><td><span class="m m-delete">DELETE</span></td><td><code>/api/events/:id</code></td><td>Admin</td><td>Delete an event (cascades registrations)</td></tr>
+<tr><td><span class="m m-get">GET</span></td><td><code>/api/events/:id/registrants</code></td><td>Admin</td><td>Students registered for an event</td></tr>
+<tr><td><span class="m m-get">GET</span></td><td><code>/api/admin/stats</code></td><td>Admin</td><td>Dashboard totals</td></tr>
+  </table>
+  <p><b>Status codes used:</b> 200 OK, 201 Created, 400 Bad Request (validation), 401 Unauthorized (not logged in), 403 Forbidden (not admin), 404 Not Found, 409 Conflict (already registered, event full, email taken).</p>
+</section>
+
+<!-- ============ 8 CODE ============ -->
+<section class="page-break">
+  <h2>8. Key Code with Explanation</h2>
+  <h3>8.1 Server setup - server/index.js</h3><pre><code>const app = express();
+const PORT = Number(process.env.PORT) || 3000;
+
+app.use(express.json({ limit: &#x27;100kb&#x27; }));   // parse JSON request bodies
+app.use(cookieParser());                     // parse the auth cookie
+app.use(loadUser);                           // attach req.user when logged in
+
+// REST API
+app.use(&#x27;/api/auth&#x27;, require(&#x27;./routes/auth&#x27;));
+app.use(&#x27;/api/events&#x27;, require(&#x27;./routes/events&#x27;));
+app.use(&#x27;/api/me&#x27;, require(&#x27;./routes/me&#x27;));
+app.use(&#x27;/api/admin&#x27;, require(&#x27;./routes/admin&#x27;));
+
+// Frontend (HTML/CSS/JS)
+app.use(express.static(path.join(__dirname, &#x27;..&#x27;, &#x27;public&#x27;), { extensions: [&#x27;html&#x27;] }));
+
+app.listen(PORT, () =&gt; console.log(`Campus EventHub running at http://localhost:${PORT}`));</code></pre><p class="explain"><b>Explanation:</b> Express passes every request through a chain of <b>middleware</b>: the JSON body and cookies are parsed, then <code>loadUser</code> checks the login cookie. Paths starting with <code>/api</code> go to the route modules (the REST API); everything else is served from <code>public/</code> as static files.</p>
+<h3>8.2 Database - server/db.js</h3><pre><code>const { DatabaseSync } = require(&#x27;node:sqlite&#x27;);
+const db = new DatabaseSync(DB_PATH);
+db.exec(&#x27;PRAGMA foreign_keys = ON;&#x27;);
+
+db.exec(`
+  CREATE TABLE IF NOT EXISTS registrations (
+    id            INTEGER PRIMARY KEY AUTOINCREMENT,
+    user_id       INTEGER NOT NULL REFERENCES users(id)  ON DELETE CASCADE,
+    event_id      INTEGER NOT NULL REFERENCES events(id) ON DELETE CASCADE,
+    registered_at TEXT    NOT NULL DEFAULT (datetime(&#x27;now&#x27;)),
+    UNIQUE (user_id, event_id)
+  );
+`);</code></pre><p class="explain"><b>Explanation:</b> <code>node:sqlite</code> is SQLite built into Node.js, so no database server or native add-on is needed. <code>CREATE TABLE IF NOT EXISTS</code> creates the tables on the first run. Foreign keys with <code>ON DELETE CASCADE</code> and <code>UNIQUE (user_id, event_id)</code> keep the data consistent, and all queries use <b>prepared statements</b> with placeholders, which prevents SQL injection.</p>
+<h3>8.3 Authentication - routes/auth.js and middleware/auth.js</h3><pre><code>// Login route
+router.post(&#x27;/login&#x27;, (req, res) =&gt; {
+  const email = String(req.body.email || &#x27;&#x27;).trim().toLowerCase();
+  const password = String(req.body.password || &#x27;&#x27;);
+  const row = db.prepare(&#x27;SELECT * FROM users WHERE email = ?&#x27;).get(email);
+  if (!row || !bcrypt.compareSync(password, row.password_hash)) {
+    return res.status(401).json({ error: &#x27;Invalid email or password.&#x27; });
+  }
+  const { password_hash, created_at, ...user } = row;
+  issueToken(res, user);
+  res.json({ user });
+});
+
+// Middleware
+function issueToken(res, user) {
+  const token = jwt.sign({ id: user.id, role: user.role }, JWT_SECRET, { expiresIn: &#x27;7d&#x27; });
+  res.cookie(&#x27;eh_token&#x27;, token, { httpOnly: true, sameSite: &#x27;lax&#x27;, maxAge: 7 * 24 * 60 * 60 * 1000 });
+}
+
+function requireAdmin(req, res, next) {
+  if (!req.user) return res.status(401).json({ error: &#x27;Please log in to continue.&#x27; });
+  if (req.user.role !== &#x27;admin&#x27;) return res.status(403).json({ error: &#x27;Admin access only.&#x27; });
+  next();
+}</code></pre><p class="explain"><b>Explanation:</b> At sign-up the password is hashed with <b>bcrypt</b>, so the real password is never stored. At login <code>bcrypt.compareSync</code> checks it; on success a <b>JSON Web Token</b> (user id + role, signed with a secret) is stored in an <b>httpOnly cookie</b> that page scripts cannot read. <code>requireAuth</code> / <code>requireAdmin</code> protect routes and answer 401 / 403.</p>
+<h3>8.4 A route with business rules - registering for an event</h3><pre><code>router.post(&#x27;/:id/register&#x27;, requireAuth, (req, res) =&gt; {
+  const event = getEvent(req.params.id, req.user.id);
+  if (!event) return res.status(404).json({ error: &#x27;Event not found.&#x27; });
+  if (event.is_past) return res.status(400).json({ error: &#x27;This event has already taken place.&#x27; });
+  if (event.is_registered) return res.status(409).json({ error: &#x27;You are already registered for this event.&#x27; });
+  if (event.seats_left &lt;= 0) return res.status(409).json({ error: &#x27;Sorry, this event is full.&#x27; });
+
+  db.prepare(&#x27;INSERT INTO registrations (user_id, event_id) VALUES (?, ?)&#x27;).run(req.user.id, event.id);
+  res.status(201).json({ message: &#x27;Registered successfully.&#x27;, event: getEvent(event.id, req.user.id) });
+});</code></pre><p class="explain"><b>Explanation:</b> <code>getEvent</code> loads the event with a live registration count. The route checks the business rules in order - event exists, not in the past, not already registered, seats left - then inserts the row and returns <code>201 Created</code> with the updated event so the page refreshes the seat count without reloading.</p>
+<h3>8.5 Frontend fetch() - public/js/common.js and event.js</h3><pre><code>// Reusable wrapper around fetch()
+async function api(path, { method = &#x27;GET&#x27;, body } = {}) {
+  const res = await fetch(&#x27;/api&#x27; + path, {
+    method,
+    credentials: &#x27;same-origin&#x27;, // send the auth cookie
+    headers: body ? { &#x27;Content-Type&#x27;: &#x27;application/json&#x27; } : {},
+    body: body ? JSON.stringify(body) : undefined,
+  });
+  const data = await res.json().catch(() =&gt; ({}));
+  if (!res.ok) throw new Error(data.error || `Request failed (${res.status})`);
+  return data;
+}
+
+// Register button on the event details page
+async function act(method, btn, okMsg) {
+  btn.disabled = true;
+  try {
+    const { event } = await api(`/events/${eventId}/register`, { method });
+    toast(okMsg);                 // &quot;You are registered! See you there.&quot;
+    render(event, currentUser);   // re-draw seats and button
+  } catch (err) {
+    toast(err.message, &#x27;error&#x27;);  // e.g. &quot;Sorry, this event is full.&quot;
+    btn.disabled = false;
+  }
+}</code></pre><p class="explain"><b>Explanation:</b> All pages use the small <code>api()</code> helper around <code>fetch()</code>: it sends JSON with the login cookie, parses the response and turns error responses into JavaScript errors carrying the server message. The Register button calls <code>POST</code> (or <code>DELETE</code> to cancel) and re-renders the page with the returned data, showing a toast message.</p>
+<h3>8.6 Client-side form validation - public/js/auth.js</h3><pre><code>const ok = validateForm(signup, {
+  name: [[(v) =&gt; v.length &gt;= 2, &#x27;Please enter your full name&#x27;]],
+  email: [[(v) =&gt; v, &#x27;Email is required&#x27;], [isEmail, &#x27;Enter a valid email address&#x27;]],
+  department: [[(v) =&gt; v, &#x27;Choose your department&#x27;]],
+  year: [[(v) =&gt; v, &#x27;Choose your year&#x27;]],
+  password: [[(v) =&gt; v.length &gt;= 6, &#x27;Password must be at least 6 characters&#x27;]],
+  confirm: [[(v, f) =&gt; v === f.password.value, &#x27;Passwords do not match&#x27;]],
+});
+if (ok) submitWith(signup, &#x27;/auth/signup&#x27;, { /* form values */ });</code></pre><p class="explain"><b>Explanation:</b> Each form field has a list of rules (a test function and a message). <code>validateForm</code> highlights invalid fields and shows the message under them, catching mistakes instantly. The server repeats the important checks because client-side validation can be bypassed.</p>
+</section>
+
+<!-- ============ 9 RUN ============ -->
+<section style="break-inside: avoid">
+  <h2>9. How to Run</h2>
+  <p>Requirement: Node.js 22.13 or newer (developed on Node.js 24). SQLite is built into Node, so nothing else needs to be installed.</p>
+<pre><code>git clone https://github.com/chhelu123/campus-eventhub.git
+cd campus-eventhub
+npm install
+npm start          # then open http://localhost:3000</code></pre>
+  <ul>
+    <li>On the first run <code>data/eventhub.db</code> is created with the admin, 5 sample students, 8 events and sample registrations (event dates are relative to the first run).</li>
+    <li>Admin login: <code>admin@eventhub.com</code> / <code>admin123</code>. Delete the <code>data/</code> folder to reset the database.</li>
+    <li>Optional environment variables: <code>PORT</code>, <code>JWT_SECRET</code>, <code>DB_PATH</code>.</li>
+  </ul>
+</section>
+
+<!-- ============ 10 OUTPUT ============ -->
+<section class="page-break">
+  <h2>10. Output</h2>
+  <p>The screenshots below were captured from the running application in Google Chrome (1366 &times; 850) while performing each action: signing up a student, registering for events, logging in as admin and creating an event.</p>
+  <div class="figs">
+  <figure class="fig"><img src="../screenshots/01-home.png" alt="Home page - list of upcoming events with search and filters"><figcaption>Figure 1: Home page - list of upcoming events with search and filters</figcaption></figure>
+<figure class="fig"><img src="../screenshots/02-search-filter.png" alt="Searching &quot;hack&quot; within the Technical category"><figcaption>Figure 2: Searching &quot;hack&quot; within the Technical category</figcaption></figure>
+<figure class="fig"><img src="../screenshots/03-signup-validation.png" alt="Sign-up form showing client-side validation errors"><figcaption>Figure 3: Sign-up form showing client-side validation errors</figcaption></figure>
+<figure class="fig"><img src="../screenshots/04-signup-filled.png" alt="Sign-up form filled in by a new student"><figcaption>Figure 4: Sign-up form filled in by a new student</figcaption></figure>
+<figure class="fig"><img src="../screenshots/05-event-details.png" alt="Event details page (logged in, before registering)"><figcaption>Figure 5: Event details page (logged in, before registering)</figcaption></figure>
+<figure class="fig"><img src="../screenshots/06-event-registered.png" alt="After clicking &quot;Register now&quot; - confirmation and updated seats"><figcaption>Figure 6: After clicking &quot;Register now&quot; - confirmation and updated seats</figcaption></figure>
+<figure class="fig"><img src="../screenshots/07-home-logged-in.png" alt="Home page when logged in - &quot;Registered&quot; badges on cards"><figcaption>Figure 7: Home page when logged in - &quot;Registered&quot; badges on cards</figcaption></figure>
+<figure class="fig"><img src="../screenshots/08-my-registrations.png" alt="My Registrations page"><figcaption>Figure 8: My Registrations page</figcaption></figure>
+<figure class="fig"><img src="../screenshots/09-login.png" alt="Login page with the admin credentials"><figcaption>Figure 9: Login page with the admin credentials</figcaption></figure>
+<figure class="fig"><img src="../screenshots/10-admin-dashboard.png" alt="Admin panel - statistics and events table"><figcaption>Figure 10: Admin panel - statistics and events table</figcaption></figure>
+<figure class="fig"><img src="../screenshots/11-admin-create-event.png" alt="Admin creating a new event"><figcaption>Figure 11: Admin creating a new event</figcaption></figure>
+<figure class="fig"><img src="../screenshots/12-admin-event-created.png" alt="New event added (top row) with success message"><figcaption>Figure 12: New event added (top row) with success message</figcaption></figure>
+<figure class="fig"><img src="../screenshots/13-admin-registrants.png" alt="Registrant list for an event, with CSV download"><figcaption>Figure 13: Registrant list for an event, with CSV download</figcaption></figure>
+<figure class="fig"><img src="../screenshots/14-new-event-listed.png" alt="The new event is immediately visible to students"><figcaption>Figure 14: The new event is immediately visible to students</figcaption></figure>
+<figure class="fig mobile"><img src="../screenshots/15-mobile-home.png" alt="Responsive layout on a 390 px wide mobile screen"><figcaption>Figure 15: Responsive layout on a 390 px wide mobile screen</figcaption></figure>
+<figure class="fig tall"><img src="../screenshots/16-api-response.png" alt="REST API tested from the command line with curl"><figcaption>Figure 16: REST API tested from the command line with curl</figcaption></figure>
+  </div>
+</section>
+
+<!-- ============ 11 CONCLUSION ============ -->
+<section class="page-break">
+  <h2>11. Conclusion</h2>
+  <p>Campus EventHub meets the goal of the mini project: it is a complete full-stack web application in which the browser (HTML, CSS, JavaScript) communicates with a Node.js / Express REST API that stores data in an SQLite database. Students can find and register for college events in a few clicks, and the admin can manage events and see registrations in real time.</p>
+  <p>Building it covered the core topics of web programming: semantic HTML forms, responsive CSS layouts with Flexbox and Grid, DOM manipulation and <code>fetch()</code> in JavaScript, HTTP methods and status codes, REST API design, server-side validation, relational database design with keys and constraints, and secure authentication with hashed passwords and cookies.</p>
+  <h3>Future enhancements</h3>
+  <ul>
+    <li>Email confirmation and reminders for registrations</li>
+    <li>Event posters (image upload) and a waiting list when an event is full</li>
+    <li>QR-code tickets for marking attendance at the venue</li>
+    <li>Deployment to a cloud host with HTTPS and a custom domain</li>
+  </ul>
+</section>
+
+</body>
+</html>
