@@ -5,18 +5,15 @@ let tab = 'upcoming';
 function row(r) {
   const { d, m } = dateParts(r.date);
   return `
-    <div class="row-item">
-      <div class="row-date cat-${esc(r.category)}"><span class="d">${d}</span><span class="m">${m}</span></div>
+    <div class="row-item cat-${esc(r.category)}">
+      <div class="row-date"><span class="d">${d}</span><span class="m">${m}</span></div>
       <div class="row-main">
-        <h3><a href="/event?id=${r.id}" style="color:inherit">${esc(r.title)}</a></h3>
-        <p class="meta">
-          <span>${icon('calendar')}${fmtDate(r.date)}</span>
-          <span>${icon('clock')}${fmtTime(r.time)}</span>
-          <span>${icon('pin')}${esc(r.venue)}</span>
-        </p>
+        <span class="cat-label">${esc(r.category)}</span>
+        <h3><a href="/event?id=${r.id}">${esc(r.title)}</a></h3>
+        <p class="ev-meta"><span>${fmtDate(r.date)}</span><span>${fmtTime(r.time)}</span><span>${esc(r.venue)}</span></p>
       </div>
       <div class="row-actions">
-        <span class="badge ${r.is_past ? 'badge-muted' : 'badge-success'}">${r.is_past ? 'Attended' : 'Confirmed'}</span>
+        <span class="tag ${r.is_past ? '' : 'tag-ok'}">${r.is_past ? 'Attended' : 'Confirmed'}</span>
         <a class="btn btn-outline btn-sm" href="/event?id=${r.id}">View</a>
         ${r.is_past ? '' : `<button class="btn btn-danger-soft btn-sm" data-cancel="${r.id}">Cancel</button>`}
       </div>
@@ -32,7 +29,7 @@ function render() {
   document.getElementById('list').innerHTML = items.length
     ? items.map(row).join('')
     : `<div class="empty">${icon('ticket')}<h3>${tab === 'upcoming' ? 'No upcoming registrations' : 'No past events yet'}</h3>
-       <p>Find something interesting and register in one click.</p><a class="btn btn-primary" href="/">Browse events</a></div>`;
+       <p>Events you register for will be listed here.</p><a class="btn btn-primary" href="/">Browse events</a></div>`;
 }
 
 async function load() {

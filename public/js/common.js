@@ -61,7 +61,11 @@ function fmtTime(hm) {
   const [h, m] = hm.split(':').map(Number);
   return `${((h + 11) % 12) + 1}:${String(m).padStart(2, '0')} ${h < 12 ? 'AM' : 'PM'}`;
 }
-function dateParts(ymd) { const d = parseDate(ymd); return { d: d.getDate(), m: MONTHS[d.getMonth()] }; }
+function dateParts(ymd) {
+  const d = parseDate(ymd);
+  return { d: d.getDate(), m: MONTHS[d.getMonth()], wd: d.toLocaleDateString('en-IN', { weekday: 'short' }) };
+}
+function monthLabel(ymd) { return parseDate(ymd).toLocaleDateString('en-IN', { month: 'long', year: 'numeric' }); }
 function todayYMD() {
   const d = new Date(); const p = (n) => String(n).padStart(2, '0');
   return `${d.getFullYear()}-${p(d.getMonth() + 1)}-${p(d.getDate())}`;
@@ -94,23 +98,25 @@ function renderHeader() {
     return `<a href="${href}" class="${active}">${label}</a>`;
   };
   const u = currentUser;
-  const initials = u ? u.name.split(' ').map((p) => p[0]).slice(0, 2).join('').toUpperCase() : '';
   document.getElementById('site-header').innerHTML = `
+    <div class="topbar"><div class="container">
+      <span>Student Council &middot; Events &amp; Activities</span>
+      <span class="hide-sm">Academic Year 2026&ndash;27</span>
+    </div></div>
     <div class="site-header">
       <nav class="container nav" id="nav">
-        <a class="brand" href="/"><span class="brand-mark">${icon('calendar')}</span><span>Campus <b>EventHub</b></span></a>
+        <a class="brand" href="/"><strong>Campus EventHub</strong><small>College events calendar</small></a>
         <button class="nav-toggle" id="nav-toggle" aria-label="Menu">${icon('menu')}</button>
         <div class="nav-links">
           ${link('/', 'Events')}
-          ${u && u.role !== 'admin' ? link('/my', 'My Registrations') : ''}
-          ${u?.role === 'admin' ? link('/admin', 'Admin Panel') : ''}
+          ${u && u.role !== 'admin' ? link('/my', 'My registrations') : ''}
+          ${u?.role === 'admin' ? link('/admin', 'Manage events') : ''}
         </div>
         <div class="nav-user">
           ${u ? `
-            <div class="avatar">${esc(initials)}</div>
-            <div class="user-meta"><strong>${esc(u.name)}${u.role === 'admin' ? '<span class="role-pill">Admin</span>' : ''}</strong><small>${esc(u.email)}</small></div>
-            <button class="btn btn-ghost btn-sm" id="logout-btn">Log out</button>`
-          : `<a class="btn btn-ghost btn-sm" href="/login">Log in</a><a class="btn btn-primary btn-sm" href="/signup">Sign up</a>`}
+            <div class="user-meta"><strong>${esc(u.name)}</strong>${u.role === 'admin' ? '<span class="role-pill">Admin</span>' : ''}<small>${esc(u.email)}</small></div>
+            <button class="btn btn-outline btn-sm" id="logout-btn">Log out</button>`
+          : `<a class="btn btn-ghost btn-sm" href="/login">Log in</a><a class="btn btn-primary btn-sm" href="/signup">Create account</a>`}
         </div>
       </nav>
     </div>`;
@@ -122,8 +128,8 @@ function renderHeader() {
 function renderFooter() {
   const f = document.getElementById('site-footer');
   if (f) f.innerHTML = `<div class="site-footer"><div class="container">
-    <span>&copy; ${new Date().getFullYear()} Campus EventHub &middot; Web Programming Mini Project</span>
-    <span>Built with Node.js, Express &amp; SQLite</span></div></div>`;
+    <span>&copy; ${new Date().getFullYear()} Campus EventHub &middot; Maintained by the Student Council</span>
+    <nav><a href="/">Events</a>${currentUser ? '' : '<a href="/login">Log in</a><a href="/signup">Create account</a>'}</nav></div></div>`;
 }
 
 // Call at the top of every page. `auth`: null | 'user' | 'admin'.

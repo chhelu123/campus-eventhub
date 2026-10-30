@@ -26,12 +26,12 @@ The server enforces all the rules - capacity limits, no duplicate registrations,
 | Area | Features |
 |---|---|
 | Authentication | Sign up, log in, log out; passwords hashed with **bcrypt**; login kept in an **httpOnly JWT cookie** (7 days); role-based access (student / admin) |
-| Browse events | Event cards with category colour, date badge, venue, time and live seat bar; **search** (title, description, venue, organiser); **category filter** chips; **date range** filter; Upcoming / Past / All toggle |
+| Browse events | Calendar-style event list grouped by month, with date, category, time, venue, organiser and seats left; **search** (title, description, venue, organiser); **category filter** chips; **date range** filter; Upcoming / Past / All toggle |
 | Event details | Full description, date, time, venue, organiser, seats registered / left, Register / Cancel button with live update |
 | My registrations | Upcoming and past tabs, cancel a registration, link to the event |
-| Admin panel | Statistics cards, table of all events, **create / edit / delete** events in a modal form, **registrant list** per event with **CSV download** |
+| Admin panel | Summary figures, table of all events, **create / edit / delete** events in a modal form, **registrant list** per event with **CSV download** |
 | Validation | Client-side form validation with inline error messages, and the same rules re-checked on the server (HTTP 400/401/403/404/409 with JSON error messages) |
-| UI | Clean, modern, responsive design (desktop, tablet, mobile), toast notifications, empty and loading states |
+| UI | Plain, readable layout in the college's maroon colour (serif headings, IBM Plex Sans text); responsive on desktop, tablet and mobile; toast notifications; empty and loading states |
 
 **Demo accounts** (created automatically on first run):
 
@@ -374,7 +374,7 @@ All screenshots were taken from the running application (headless Chrome, 1366 x
 ### 10.6 After clicking "Register now"
 ![Registered](screenshots/06-event-registered.png)
 
-### 10.7 Home page when logged in - "Registered" badges
+### 10.7 Home page when logged in - "Registered" tags
 ![Home logged in](screenshots/07-home-logged-in.png)
 
 ### 10.8 My Registrations

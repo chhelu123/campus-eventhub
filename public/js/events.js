@@ -2,47 +2,57 @@
 const state = { search: '', category: '', from: '', to: '', when: 'upcoming' };
 let debounceTimer;
 
-function eventCard(e) {
-  const { d, m } = dateParts(e.date);
+function eventRow(e) {
+  const { d, m, wd } = dateParts(e.date);
   let status = '';
-  if (e.is_registered) status = `<span class="badge status ok">${icon('check')} Registered</span>`;
-  else if (e.is_past) status = `<span class="badge status">Completed</span>`;
-  else if (e.seats_left === 0) status = `<span class="badge status">Full</span>`;
+  if (e.is_registered) status = `<span class="tag tag-ok">${icon('check')} Registered</span>`;
+  else if (e.is_past) status = `<span class="tag">Completed</span>`;
+  else if (e.seats_left === 0) status = `<span class="tag tag-full">Full</span>`;
+  const low = !e.is_past && e.seats_left > 0 && e.seats_left <= e.capacity * 0.2;
 
   return `
-    <a class="card" href="/event?id=${e.id}">
-      <div class="banner cat-${esc(e.category)}">
-        ${icon(e.category, 'cat-icon')}
-        <span class="badge">${esc(e.category)}</span>
+    <a class="ev cat-${esc(e.category)}" href="/event?id=${e.id}">
+      <div class="ev-date"><span class="wd">${wd}</span><span class="d">${d}</span><span class="m">${m}</span></div>
+      <div>
+        <span class="cat-label">${esc(e.category)}</span>
+        <h3 class="ev-title">${esc(e.title)}</h3>
+        <p class="ev-meta"><span>${fmtTime(e.time)}</span><span>${esc(e.venue)}</span><span>${esc(e.organizer)}</span></p>
+        <p class="ev-desc">${esc(e.description)}</p>
+      </div>
+      <div class="ev-side">
+        ${e.is_past
+          ? `<span class="seats-left">${e.registered_count} attended</span>`
+          : `<span class="seats-left${low ? ' low' : ''}">${e.seats_left} of ${e.capacity} seats left</span>`}
         ${status}
-        <div class="date-badge"><span class="d">${d}</span><span class="m">${m}</span></div>
-      </div>
-      <div class="card-body">
-        <h3>${esc(e.title)}</h3>
-        <p class="meta"><span>${icon('clock')}${fmtTime(e.time)}</span><span>${icon('pin')}${esc(e.venue)}</span></p>
-        <p class="desc">${esc(e.description)}</p>
-      </div>
-      <div class="card-foot">
-        <div class="seats">${seatsBar(e)}<small>${e.is_past ? `${e.registered_count} attended` : `${e.seats_left} of ${e.capacity} seats left`}</small></div>
-        <span class="link-arrow">Details &rarr;</span>
       </div>
     </a>`;
 }
 
+// Insert a month heading whenever the month changes, so the list reads like a calendar.
+function agenda(events) {
+  let lastMonth = '';
+  return events.map((e) => {
+    const month = monthLabel(e.date);
+    const head = month !== lastMonth ? `<h3 class="month">${month}</h3>` : '';
+    lastMonth = month;
+    return head + eventRow(e);
+  }).join('');
+}
+
 async function loadEvents() {
   const grid = document.getElementById('grid');
-  grid.innerHTML = '<div class="skeleton"></div>'.repeat(3);
+  grid.innerHTML = '<div class="skeleton"></div>'.repeat(4);
   const params = new URLSearchParams(Object.entries(state).filter(([, v]) => v));
   try {
     const { events, count } = await api('/events?' + params);
     const titles = { upcoming: 'Upcoming events', past: 'Past events', all: 'All events' };
     document.getElementById('results-title').textContent = (state.category ? state.category + ' - ' : '') + titles[state.when];
-    document.getElementById('results-count').textContent = `${count} event${count === 1 ? '' : 's'} found`;
+    document.getElementById('results-count').textContent = `${count} event${count === 1 ? '' : 's'}`;
     grid.innerHTML = events.length
-      ? events.map(eventCard).join('')
-      : `<div class="empty" style="grid-column:1/-1">${icon('search')}<h3>No events match your filters</h3><p>Try a different search term or clear the filters.</p></div>`;
+      ? agenda(events)
+      : `<div class="empty">${icon('search')}<h3>No events match your filters</h3><p>Try a different search term or clear the filters.</p></div>`;
   } catch (err) {
-    grid.innerHTML = `<div class="empty" style="grid-column:1/-1"><h3>Could not load events</h3><p>${esc(err.message)}</p></div>`;
+    grid.innerHTML = `<div class="empty"><h3>Could not load events</h3><p>${esc(err.message)}</p></div>`;
   }
 }
 
@@ -51,9 +61,9 @@ async function loadHeroStats() {
   const seats = events.reduce((s, e) => s + e.seats_left, 0);
   const cats = new Set(events.map((e) => e.category)).size;
   document.getElementById('hero-stats').innerHTML = `
-    <div><strong>${events.length}</strong><span>Upcoming events</span></div>
-    <div><strong>${cats}</strong><span>Categories</span></div>
-    <div><strong>${seats}</strong><span>Seats available</span></div>`;
+    <span><strong>${events.length}</strong> upcoming events</span>
+    <span><strong>${cats}</strong> categories</span>
+    <span><strong>${seats}</strong> seats still open</span>`;
 }
 
 async function setupFilters() {

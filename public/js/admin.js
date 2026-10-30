@@ -2,17 +2,14 @@
 let events = [];
 let editingId = null;
 let lastRegistrants = null;
-const CAT_COLORS = { Technical: '#4f46e5', Cultural: '#db2777', Sports: '#059669', Workshop: '#d97706', Seminar: '#7c3aed' };
-
 async function loadStats() {
   const s = await api('/admin/stats');
-  const card = (ic, color, value, label) =>
-    `<div class="stat"><span class="ic" style="background:${color}">${icon(ic)}</span><div><strong>${value}</strong><span>${label}</span></div></div>`;
+  const card = (value, label) => `<div class="stat"><span>${label}</span><strong>${value}</strong></div>`;
   document.getElementById('stats').innerHTML =
-    card('calendar', 'linear-gradient(135deg,#4f46e5,#0ea5e9)', s.totalEvents, 'Total events') +
-    card('clock', 'linear-gradient(135deg,#059669,#84cc16)', s.upcomingEvents, 'Upcoming events') +
-    card('ticket', 'linear-gradient(135deg,#db2777,#f97316)', s.totalRegistrations, 'Registrations') +
-    card('users', 'linear-gradient(135deg,#7c3aed,#2563eb)', s.totalStudents, 'Students');
+    card(s.totalEvents, 'Total events') +
+    card(s.upcomingEvents, 'Upcoming') +
+    card(s.totalRegistrations, 'Registrations') +
+    card(s.totalStudents, 'Registered students');
 }
 
 function renderRows() {
@@ -21,7 +18,7 @@ function renderRows() {
   document.getElementById('rows').innerHTML = list.length ? list.map((e) => `
     <tr>
       <td><div class="t-title">${esc(e.title)}</div><div class="t-sub">${esc(e.venue)}</div></td>
-      <td><span class="dot" style="background:${CAT_COLORS[e.category]}"></span>${esc(e.category)}</td>
+      <td class="cat-${esc(e.category)}"><span class="dot" style="background:var(--cat)"></span>${esc(e.category)}</td>
       <td>${fmtDate(e.date)}<div class="t-sub">${fmtTime(e.time)}${e.is_past ? ' &middot; completed' : ''}</div></td>
       <td style="min-width:150px">${seatsBar(e)}<span class="t-sub">${e.registered_count} / ${e.capacity}</span></td>
       <td><div class="actions">

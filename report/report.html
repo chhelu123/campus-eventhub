@@ -9,7 +9,7 @@
   * { box-sizing: border-box; }
   body { font-family: 'Inter', 'Segoe UI', Arial, sans-serif; color: #1e293b; font-size: 10.5pt; line-height: 1.55; margin: 0; }
   h1, h2, h3 { color: #0f172a; line-height: 1.25; }
-  h2 { font-size: 15pt; margin: 0 0 8pt; padding-bottom: 5pt; border-bottom: 2px solid #4f46e5; break-after: avoid; }
+  h2 { font-size: 15pt; margin: 0 0 8pt; padding-bottom: 5pt; border-bottom: 2px solid #8c1d2f; break-after: avoid; }
   h3 { font-size: 11.5pt; margin: 14pt 0 6pt; break-after: avoid; }
   p { margin: 0 0 8pt; text-align: justify; }
   section { margin-bottom: 18pt; }
@@ -17,7 +17,7 @@
   code { font-family: Consolas, 'Courier New', monospace; font-size: 9pt; background: #f1f5f9; padding: 0 3px; border-radius: 3px; }
   pre { background: #0f172a; color: #e2e8f0; border-radius: 6px; padding: 9pt 11pt; font-size: 8.6pt; line-height: 1.45; white-space: pre-wrap; word-break: break-word; break-inside: avoid; margin: 0 0 6pt; }
   pre code { background: none; padding: 0; color: inherit; font-size: inherit; }
-  .explain { font-size: 10pt; background: #f8fafc; border-left: 3px solid #4f46e5; padding: 6pt 9pt; break-inside: avoid; }
+  .explain { font-size: 10pt; background: #f8fafc; border-left: 3px solid #8c1d2f; padding: 6pt 9pt; break-inside: avoid; }
   table { width: 100%; border-collapse: collapse; font-size: 9.5pt; margin: 4pt 0 10pt; break-inside: auto; }
   th { background: #eef2ff; color: #3730a3; text-align: left; font-weight: 700; }
   th, td { border: 1px solid #cbd5e1; padding: 4pt 6pt; vertical-align: top; }
@@ -27,10 +27,10 @@
 
   /* cover */
   .cover { height: 260mm; display: flex; flex-direction: column; justify-content: space-between; text-align: center; padding: 18mm 8mm 6mm; }
-  .cover .tag { letter-spacing: .2em; font-size: 10pt; color: #4f46e5; font-weight: 700; text-transform: uppercase; }
+  .cover .tag { letter-spacing: .2em; font-size: 10pt; color: #8c1d2f; font-weight: 700; text-transform: uppercase; }
   .cover h1 { font-size: 34pt; margin: 10pt 0 6pt; font-weight: 800; }
   .cover .sub { font-size: 14pt; color: #475569; }
-  .cover .logo { width: 70px; height: 70px; border-radius: 18px; margin: 0 auto 16pt; background: linear-gradient(135deg, #4f46e5, #0ea5e9); display: grid; place-items: center; }
+  .cover .logo { width: 70px; height: 70px; border-radius: 18px; margin: 0 auto 16pt; background: #8c1d2f; display: grid; place-items: center; }
   .cover .stack { margin-top: 18pt; display: flex; justify-content: center; gap: 8pt; flex-wrap: wrap; }
   .cover .stack span { border: 1px solid #c7d2fe; background: #eef2ff; color: #3730a3; border-radius: 99px; padding: 3pt 10pt; font-size: 9.5pt; font-weight: 600; }
   .details { width: 70%; margin: 0 auto; text-align: left; font-size: 11pt; }
@@ -44,11 +44,11 @@
   .box { background: #fff; border: 1px solid #cbd5e1; border-radius: 5px; padding: 4pt 6pt; margin-bottom: 4pt; font-size: 8.8pt; }
   .box b { display: block; color: #0f172a; }
   .arrow { display: flex; flex-direction: column; justify-content: center; align-items: center; font-size: 8pt; color: #475569; width: 70px; text-align: center; }
-  .arrow .line { font-size: 16pt; color: #4f46e5; line-height: 1; }
+  .arrow .line { font-size: 16pt; color: #8c1d2f; line-height: 1; }
   .db { background: #ecfdf5; border-color: #a7f3d0; }
   .er { display: flex; gap: 10pt; align-items: flex-start; justify-content: center; margin: 6pt 0 8pt; break-inside: avoid; }
-  .entity { border: 1.5px solid #4f46e5; border-radius: 6px; overflow: hidden; font-size: 8.6pt; min-width: 150px; }
-  .entity .eh { background: #4f46e5; color: #fff; font-weight: 700; padding: 3pt 7pt; text-align: center; }
+  .entity { border: 1.5px solid #8c1d2f; border-radius: 6px; overflow: hidden; font-size: 8.6pt; min-width: 150px; }
+  .entity .eh { background: #8c1d2f; color: #fff; font-weight: 700; padding: 3pt 7pt; text-align: center; }
   .entity div.r { padding: 2pt 7pt; border-top: 1px solid #e2e8f0; font-family: Consolas, monospace; }
   .pk { color: #b45309; font-weight: 700; } .fk { color: #0369a1; font-weight: 700; }
   .rel { align-self: center; font-size: 8.5pt; color: #475569; text-align: center; }
@@ -108,12 +108,12 @@
   <table>
     <tr><th style="width:22%">Area</th><th>Features</th></tr>
     <tr><td>Authentication</td><td>Sign up, log in, log out; passwords hashed with bcrypt; login kept in an httpOnly JWT cookie (7 days); role-based access (student / admin)</td></tr>
-    <tr><td>Browse events</td><td>Event cards with category colour, date badge, venue, time and live seat bar; search by title / description / venue / organiser; category filter; date-range filter; Upcoming / Past / All toggle</td></tr>
+    <tr><td>Browse events</td><td>Calendar-style event list grouped by month, with date, category, time, venue, organiser and seats left; search by title / description / venue / organiser; category filter; date-range filter; Upcoming / Past / All toggle</td></tr>
     <tr><td>Event details</td><td>Description, date, time, venue, organiser, seats registered / left; Register and Cancel buttons with instant update</td></tr>
     <tr><td>My registrations</td><td>Upcoming and Past tabs, cancel a registration, link to each event</td></tr>
-    <tr><td>Admin panel</td><td>Statistics cards; table of all events; create / edit / delete events in a modal form; registrant list per event with CSV download</td></tr>
+    <tr><td>Admin panel</td><td>Summary figures; table of all events; create / edit / delete events in a modal form; registrant list per event with CSV download</td></tr>
     <tr><td>Validation</td><td>Client-side validation with inline messages; the same rules re-checked on the server with proper HTTP status codes (400, 401, 403, 404, 409)</td></tr>
-    <tr><td>User interface</td><td>Modern, responsive design (desktop, tablet, mobile); toast notifications; loading and empty states</td></tr>
+    <tr><td>User interface</td><td>Plain, readable layout in the college's maroon colour (serif headings, IBM Plex Sans text); responsive on desktop, tablet and mobile; toast notifications; loading and empty states</td></tr>
   </table>
   <p><b>Demo accounts</b> (created automatically on first run): admin <code>admin@eventhub.com</code> / <code>admin123</code>; sample students such as <code>aarav@student.edu</code> / <code>student123</code>.</p>
 </section>
@@ -388,7 +388,7 @@ npm start          # then open http://localhost:3000</code></pre>
 <figure class="fig"><img src="../screenshots/04-signup-filled.png" alt="Sign-up form filled in by a new student"><figcaption>Figure 4: Sign-up form filled in by a new student</figcaption></figure>
 <figure class="fig"><img src="../screenshots/05-event-details.png" alt="Event details page (logged in, before registering)"><figcaption>Figure 5: Event details page (logged in, before registering)</figcaption></figure>
 <figure class="fig"><img src="../screenshots/06-event-registered.png" alt="After clicking &quot;Register now&quot; - confirmation and updated seats"><figcaption>Figure 6: After clicking &quot;Register now&quot; - confirmation and updated seats</figcaption></figure>
-<figure class="fig"><img src="../screenshots/07-home-logged-in.png" alt="Home page when logged in - &quot;Registered&quot; badges on cards"><figcaption>Figure 7: Home page when logged in - &quot;Registered&quot; badges on cards</figcaption></figure>
+<figure class="fig"><img src="../screenshots/07-home-logged-in.png" alt="Home page when logged in - &quot;Registered&quot; tags on events"><figcaption>Figure 7: Home page when logged in - &quot;Registered&quot; tags on events</figcaption></figure>
 <figure class="fig"><img src="../screenshots/08-my-registrations.png" alt="My Registrations page"><figcaption>Figure 8: My Registrations page</figcaption></figure>
 <figure class="fig"><img src="../screenshots/09-login.png" alt="Login page with the admin credentials"><figcaption>Figure 9: Login page with the admin credentials</figcaption></figure>
 <figure class="fig"><img src="../screenshots/10-admin-dashboard.png" alt="Admin panel - statistics and events table"><figcaption>Figure 10: Admin panel - statistics and events table</figcaption></figure>
